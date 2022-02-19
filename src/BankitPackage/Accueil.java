@@ -152,7 +152,7 @@ public class Accueil {
 						TableauDeBord tdb = new TableauDeBord();
 						tdb.getFrame().setVisible(true);
 					}else {
-						JOptionPane.showMessageDialog(null,"Login ou mot de passe invalides");
+						JOptionPane.showMessageDialog(null,"Login ou mot de passe invalides", "Oh oh !", JOptionPane.INFORMATION_MESSAGE);
 					}
 					
 				}catch (SQLException ex) {
