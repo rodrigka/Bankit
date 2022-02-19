@@ -19,8 +19,8 @@ public class ConnectionSQL {
             final String control = "org.sqlite.JDBC";
             Class.forName(control);
             final String url_bd = "jdbc:sqlite:BankitDb.db";
-            c = (Connection) DriverManager.getConnection(url_bd, "root", "root");
-            Statement statement = c.createStatement();
+            c = (Connection) DriverManager.getConnection(url_bd);
+            statement = c.createStatement();
         } catch (ClassNotFoundException | SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
