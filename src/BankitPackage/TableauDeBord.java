@@ -1,13 +1,10 @@
 package BankitPackage;
 
 import java.awt.EventQueue;
-import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -15,17 +12,48 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.SystemColor;
 import java.awt.Cursor;
 import javax.swing.border.BevelBorder;
 import javax.swing.JTable;
 
 public class TableauDeBord {
 
-	private JFrame frameTdb;
+	private JFrame frame;
 	private JTable table;
 
+	
+	public JFrame getFrame() {
+		return frame;
+	}
 
+	public void setFrame(JFrame frame) {
+		this.frame = frame;
+	}
+
+	public JTable getTable() {
+		return table;
+	}
+
+	public void setTable(JTable table) {
+		this.table = table;
+	}
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					TableauDeBord window = new TableauDeBord();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
 	/**
 	 * Create the application.
 	 */
@@ -37,17 +65,17 @@ public class TableauDeBord {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		setFrameTdb(new JFrame());
-		getFrameTdb().setExtendedState(JFrame.MAXIMIZED_BOTH);
-		getFrameTdb().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		getFrameTdb().setBounds(100, 100, 1400, 900);
-		getFrameTdb().getContentPane().setLayout(null);
-		getFrameTdb().setResizable(false);
+		frame = new JFrame();
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setBounds(100, 100, 1400, 900);
+		frame.getContentPane().setLayout(null);
+		frame.setResizable(false);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(102, 204, 204));
 		panel_1.setBounds(0, 0, 1319, 92);
-		getFrameTdb().getContentPane().add(panel_1);
+		frame.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 		
 		JLabel LogoNom = new JLabel("Bankit");
@@ -60,7 +88,7 @@ public class TableauDeBord {
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(102, 153, 255));
 		panel.setBounds(0, 0, 284, 744);
-		getFrameTdb().getContentPane().add(panel);
+		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		JLabel PrenomNom = new JLabel("Prenom Nom");
@@ -111,7 +139,7 @@ public class TableauDeBord {
 		panel_2.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		panel_2.setBackground(new Color(255, 255, 255));
 		panel_2.setBounds(283, 92, 1007, 667);
-		getFrameTdb().getContentPane().add(panel_2);
+		frame.getContentPane().add(panel_2);
 		panel_2.setLayout(null);
 		
 		JPanel panel_4 = new JPanel();
@@ -195,13 +223,5 @@ public class TableauDeBord {
 		lblFaireUnEmprunt.setBounds(45, 402, 280, 43);
 		panel_2.add(lblFaireUnEmprunt);
 
-	}
-
-	public JFrame getFrameTdb() {
-		return frameTdb;
-	}
-
-	public void setFrameTdb(JFrame frameTdb) {
-		this.frameTdb = frameTdb;
 	}
 }

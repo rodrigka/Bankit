@@ -1,14 +1,15 @@
 package BankitPackage;
 
-import java.awt.EventQueue;
 import java.sql.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Accueil {
 
-	private JFrame frameAcc;
+	private JFrame frame;
 	private JPasswordField txtPassword;
 	private JLabel logoNama;
 	private JLabel slogan;
@@ -17,10 +18,24 @@ public class Accueil {
 	private JTextField txtLogin;
 	private JLabel lbl3;
 	private JLabel lbl4;
-	Connection con = new Connection();
-	Statement pst;
-	ResultSet rs;
+	
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Accueil window = new Accueil();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 
+			}
+		});
+	}
 
 	/**
 	 * Create the application.
@@ -28,21 +43,22 @@ public class Accueil {
 	public Accueil() {
 		initialize();
 	}
+	
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		setFrameAcc(new JFrame());
-		getFrameAcc().setBounds(100, 100, 800, 550);
-		getFrameAcc().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		getFrameAcc().getContentPane().setLayout(null);
+		frame = new JFrame();
+		frame.setBounds(100, 100, 800, 550);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
 		panel.setForeground(new Color(102, 153, 255));
 		panel.setBackground(new Color(102, 153, 255));
 		panel.setBounds(0, 0, 316, 513);
-		getFrameAcc().getContentPane().add(panel);
+		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		logoNama = new JLabel("Bankit");
@@ -70,7 +86,7 @@ public class Accueil {
 		panel_1.setForeground(new Color(102, 153, 255));
 		panel_1.setBackground(new Color(255, 255, 255));
 		panel_1.setBounds(305, 0, 481, 513);
-		getFrameAcc().getContentPane().add(panel_1);
+		frame.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 		
 		JLabel lbl2 = new JLabel("Mot de passe : ");
@@ -115,9 +131,38 @@ public class Accueil {
 		btnEntrer.setBackground(new Color(102, 153, 255));
 		btnEntrer.setForeground(new Color(255, 255, 255));
 		btnEntrer.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 16)); 
-		btnEntrer.addActionListener(e -> {
-			getFrameAcc().dispose();
-			});
+		btnEntrer.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					ConnectionSQL c = new ConnectionSQL();
+					
+					String login, password;
+					login = txtLogin.getText();
+					password = txtPassword.getText();
+					c.Connexion();
+					
+					String check = "SELECT * FROM LoginInfo "
+									+ "WHERE login='" +login+ "' AND password='"+password+"'";
+					c.result = c.statement.executeQuery(check);
+					
+					if(c.result.next()) {
+						frame.setVisible(false);
+						TableauDeBord tdb = new TableauDeBord();
+						tdb.getFrame().setVisible(true);
+						
+					}else {
+						JOptionPane.showMessageDialog(null,"Login ou mot de passe invalides");
+					}
+					
+				}catch (SQLException ex) {
+					JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				}
+				
+			}
+		});
+
 		
 		lbl3 = new JLabel("Vous n'avez pas encore les codes d'acces ?");
 		lbl3.setBounds(72, 420, 368, 30);
@@ -130,13 +175,5 @@ public class Accueil {
 		lbl4.setForeground(new Color(102, 153, 255));
 		lbl4.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 14));
 		panel_1.add(lbl4);
-	}
-
-	public JFrame getFrameAcc() {
-		return frameAcc;
-	}
-
-	public void setFrameAcc(JFrame frameAcc) {
-		this.frameAcc = frameAcc;
 	}
 }
