@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Accueil {
+public class FenetreLogin {
 
 	private JFrame frame;
 	private JPasswordField txtPassword;
@@ -27,7 +27,7 @@ public class Accueil {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Accueil window = new Accueil();
+					FenetreLogin window = new FenetreLogin();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -40,7 +40,7 @@ public class Accueil {
 	/**
 	 * Create the application.
 	 */
-	public Accueil() {
+	public FenetreLogin() {
 		initialize();
 	}
 	
@@ -156,7 +156,7 @@ public class Accueil {
 					}
 					
 				}catch (SQLException ex) {
-					JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, ex.getMessage(),"Erreur de connexion", JOptionPane.ERROR_MESSAGE);
 				}
 				
 			}
