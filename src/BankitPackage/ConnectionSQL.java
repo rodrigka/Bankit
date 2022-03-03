@@ -14,7 +14,7 @@ public class ConnectionSQL {
 	Statement statement;
 	ResultSet result;
 	
-	public void Connexion() {
+	public void connexion() {
         try {
             final String control = "org.sqlite.JDBC";
             Class.forName(control);
@@ -26,7 +26,8 @@ public class ConnectionSQL {
         }
     }
 
-	public void Deconnexion() {
+	
+	public void deconnexion() {
         try {
             if (c != null) {
                 if (statement != null) {

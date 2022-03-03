@@ -135,13 +135,12 @@ public class FenetreLogin {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				ConnectionSQL c = new ConnectionSQL();
 				try {
-					ConnectionSQL c = new ConnectionSQL();
-					
 					String login, password;
 					login = txtLogin.getText();
 					password = txtPassword.getText();
-					c.Connexion();
+					c.connexion();
 					
 					String check = "SELECT * FROM LoginInfo "
 									+ "WHERE login='" +login+ "' AND password='"+password+"'";
@@ -158,7 +157,6 @@ public class FenetreLogin {
 				}catch (SQLException ex) {
 					JOptionPane.showMessageDialog(null, ex.getMessage(),"Erreur de connexion", JOptionPane.ERROR_MESSAGE);
 				}
-				
 			}
 		});
 
