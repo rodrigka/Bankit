@@ -4,42 +4,38 @@ public class CalculEmprunt {
 
 	double capitalEmprunte;
 	String pret;
-	int dureeRembourse;
+	double dureeRembourse;
 	double total;
-	double tauxInteret;
 	
 	//Constructeur :
-	public CalculEmprunt (	float capitalEmprunte, String pret, int dureeRembourse) {
-		this.getCapitalEmprunte();
-		this.getDureeRembourse();
-		this.getPret();
+	public CalculEmprunt (double capitalEmprunte, String pret, double dureeRembourse) {
+		this.setCapitalEmprunte(capitalEmprunte);
+		this.setDureeRembourse(dureeRembourse);
+		this.setPret(pret);
 	}
 	
 	//methode calcul :
 	
-	public double calculEmprunt() {
-		if(pret == "pr\\u00EAt immobilier") {
+	public void calcul(String pret) {  
+		double tauxInteret = 0;
+		double capitalE = 0;
+		if(pret == "pret immobilier") {
 			tauxInteret = 1.2;
-		} else if (pret == "cr\u00E9dit \u00E0 la consommation") {
+		} else if (pret == "credit a la consommation") {
 			tauxInteret = 5;
-		} else if (pret == "hypoth\u00E8que") {
+		} else if (pret == "hypotheque") {
 			tauxInteret = 0.8;
-		} else if (pret == "pr\u00EAt \u00E9tudiant") {
+		} else if (pret == "pret etudiant") {
 			tauxInteret = 0.5;
 		}
-		capitalEmprunte = capitalEmprunte + (capitalEmprunte*tauxInteret);
-		total = capitalEmprunte/dureeRembourse;
-		return total;
-	}
-	
-	public void afficherCalcul() {
+		capitalE = this.capitalEmprunte + (this.capitalEmprunte*tauxInteret);
+		total = capitalE/this.dureeRembourse;
 		System.out.println(total);
 	}
 
 	public static void main(String[] args) {
-		CalculEmprunt x = new CalculEmprunt(2000,"pr\\\\u00EAt immobilier",5);
-		x.afficherCalcul();
-		
+		CalculEmprunt x = new CalculEmprunt(2000.0,"pret immobilier",36.0);
+		x.calcul("pret immobilier");
 	}
 	
 	public double getCapitalEmprunte() {
@@ -58,11 +54,11 @@ public class CalculEmprunt {
 		this.pret = pret;
 	}
 
-	public int getDureeRembourse() {
+	public double getDureeRembourse() {
 		return dureeRembourse;
 	}
 
-	public void setDureeRembourse(int dureeRembourse) {
+	public void setDureeRembourse(double dureeRembourse) {
 		this.dureeRembourse = dureeRembourse;
 	}
 
@@ -72,13 +68,5 @@ public class CalculEmprunt {
 
 	public void setTotal(double total) {
 		this.total = total;
-	}
-
-	public double getTauxInteret() {
-		return tauxInteret;
-	}
-
-	public void setTauxInteret(double tauxInteret) {
-		this.tauxInteret = tauxInteret;
 	}
 }
