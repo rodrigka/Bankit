@@ -1,7 +1,7 @@
 package BankitPackage;
 
 public class CalculEmprunt {
-
+	
 	double capitalEmprunte;
 	String pret;
 	double dureeRembourse;
@@ -69,4 +69,5 @@ public class CalculEmprunt {
 	public void setTotal(double total) {
 		this.total = total;
 	}
+	
 }

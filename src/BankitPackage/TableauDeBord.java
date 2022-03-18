@@ -1,5 +1,7 @@
 package BankitPackage;
 
+import java.awt.event.ActionListener; 
+ import java.awt.event.ActionEvent;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -11,6 +13,8 @@ import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.ActionEvent;
 import java.awt.Cursor;
 import javax.swing.border.BevelBorder;
@@ -20,15 +24,19 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.JProgressBar;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.border.LineBorder;
 import javax.swing.JFormattedTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JCheckBox;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class TableauDeBord {
 
+	private double tauxInteret = 0;
 	private JFrame frame;
 	private JTable table;
 	private JTextField textFieldMontant;
@@ -36,13 +44,15 @@ public class TableauDeBord {
 	private JTextField textFieldDate;
 	private JTextField textFieldCapitalEmp;
 	private JTextField textFieldDuree;
-	private JTextField textField;
+	private JTextField nbcompte;
 	private JPasswordField passwordField;
 	private JTextField textField_2;
 	private JTextField textField_3;
 	private JPasswordField passwordField_1;
 	private JPasswordField passwordField_2;
 	private JLabel lblMdPactuel;
+	private JComboBox comboBoxTypePret;
+	private JTextField textFieldCapEmprunte;
 
 	public JFrame getFrame() {
 		return frame;
@@ -58,6 +68,14 @@ public class TableauDeBord {
 
 	public void setTable(JTable table) {
 		this.table = table;
+	}
+	
+	public JTextField getNbcompte() {
+		return nbcompte;
+	}
+
+	public void setNbcompte(JTextField nbcompte) {
+		this.nbcompte = nbcompte;
 	}
 	
 	/**
@@ -143,113 +161,131 @@ public class TableauDeBord {
 		version.setForeground(Color.WHITE);
 		version.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 14));
 		
+		
+		
 		/*
-		 * Panel Accueil :
+		 *  Panel calculer emprunt :
 		 */
 		
-		JPanel accueil = new JPanel();
-		accueil.setBounds(283, 0, 1022, 710);
-		frame.getContentPane().add(accueil);
-		accueil.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
-		accueil.setBackground(Color.WHITE);
-		accueil.setLayout(null);
+		JPanel calculEmprunt = new JPanel();
+		calculEmprunt.setBackground(Color.WHITE);
+		calculEmprunt.setBounds(283, 0, 1007, 718);
+		frame.getContentPane().add(calculEmprunt);
+		calculEmprunt.setLayout(null);
 		
-		JPanel tdb1 = new JPanel();
-		tdb1.setBounds(45, 147, 435, 223);
-		tdb1.setFocusCycleRoot(true);
-		tdb1.setBorder(null);
-		tdb1.setBackground(new Color(102, 204, 153));
-		accueil.add(tdb1);
-		tdb1.setLayout(null);
+		JPanel panelEmprunt = new JPanel();
+		panelEmprunt.setBounds(161, 300, 728, 248);
+		panelEmprunt.setLayout(null);
+		panelEmprunt.setBackground(new Color(173, 216, 230));
+		calculEmprunt.add(panelEmprunt);
 		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setBounds(10, 71, 61, 69);
-		tdb1.add(lblNewLabel);
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\kater\\OneDrive\\Documents\\L3-SNGI\\S5\\Conception et programmation orient\u00E9s objet\\Fichiers Java\\Bankit\\Img\\Membres.jpg.png"));
+		JLabel lblFaireUnEmprunt = new JLabel("Calculer un pr\u00EAt");
+		lblFaireUnEmprunt.setBounds(388, 204, 261, 43);
+		lblFaireUnEmprunt.setHorizontalAlignment(SwingConstants.CENTER);
+		lblFaireUnEmprunt.setForeground(new Color(153, 153, 255));
+		lblFaireUnEmprunt.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 28));
+		calculEmprunt.add(lblFaireUnEmprunt);
 		
-		JLabel lblTdB_1 = new JLabel("Nombre d'adh\u00E9rents");
-		lblTdB_1.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblTdB_1.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 38));
-		lblTdB_1.setForeground(new Color(255, 255, 255));
-		lblTdB_1.setBounds(10, 11, 415, 38);
-		tdb1.add(lblTdB_1);
+		JLabel lblCapitalEmp = new JLabel("Capital emprunt\u00E9");
+		lblCapitalEmp.setBackground(Color.WHITE);
+		lblCapitalEmp.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCapitalEmp.setForeground(Color.WHITE);
+		lblCapitalEmp.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
+		lblCapitalEmp.setBounds(10, 39, 156, 31);
+		panelEmprunt.add(lblCapitalEmp);
 		
-		JLabel lblTdB_1_1 = new JLabel("200");
-		lblTdB_1_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTdB_1_1.setForeground(Color.WHITE);
-		lblTdB_1_1.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 98));
-		lblTdB_1_1.setBounds(166, 71, 214, 105);
-		tdb1.add(lblTdB_1_1);
+		JLabel lblTaux = new JLabel("0");
+		lblTaux.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTaux.setBorder(new LineBorder(Color.WHITE, 1, true));
+		lblTaux.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
+		lblTaux.setForeground(Color.WHITE);
+		lblTaux.setBackground(Color.WHITE);
+		lblTaux.setBounds(616, 39, 54, 31);
+		panelEmprunt.add(lblTaux);
 		
-		JLabel lblTableauDeBord = new JLabel("Tableau de bord");
-		lblTableauDeBord.setBounds(45, 81, 450, 43);
-		lblTableauDeBord.setHorizontalAlignment(SwingConstants.LEFT);
-		lblTableauDeBord.setForeground(new Color(153, 153, 255));
-		lblTableauDeBord.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 48));
-		accueil.add(lblTableauDeBord);
+		JComboBox comboBoxTypePret = new JComboBox();
+		comboBoxTypePret.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		comboBoxTypePret.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
+		comboBoxTypePret.setForeground(new Color(173, 216, 230));
+		comboBoxTypePret.setModel(new DefaultComboBoxModel(new String[] {"", "pret immobilier", "credit consommation", "hypotheque", "pret etudiant"}));
+		comboBoxTypePret.setBounds(176, 95, 227, 31);
+		comboBoxTypePret.setBackground(Color.WHITE);
+		panelEmprunt.add(comboBoxTypePret);
 		
-		JPanel tdb2 = new JPanel();
-		tdb2.setBounds(490, 147, 480, 223);
-		tdb2.setLayout(null);
-		tdb2.setBorder(null);
-		tdb2.setBackground(new Color(102, 204, 153));
-		accueil.add(tdb2);
+		comboBoxTypePret.addItemListener(new ItemListener(){
+			
+			@Override
+	        public void itemStateChanged(ItemEvent e){
+				
+				if(e.getStateChange()==ItemEvent.SELECTED){
+				
+		        	if (e.getItem().equals("pret immobilier")){
+		            	tauxInteret = 1.2;
+		            } else if (e.getItem().equals("credit consommation")){
+		            	tauxInteret = 3.2;
+		            } else if (e.getItem().equals("hypotheque")){
+		            	tauxInteret = 0.8;
+		            } else if (e.getItem().equals("pret etudiant")){
+		            	tauxInteret = 0.5;
+		            }
+		        	
+		        	lblTaux.setText(String.valueOf(tauxInteret));
+				}
+			}
+        	
+		});
 		
-		JLabel lblTdB_2 = new JLabel("Taux de satisfaction");
-		lblTdB_2.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblTdB_2.setForeground(Color.WHITE);
-		lblTdB_2.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 38));
-		lblTdB_2.setBounds(10, 11, 460, 39);
-		tdb2.add(lblTdB_2);
 		
-		JLabel lblTdB_2_1 = new JLabel("200");
-		lblTdB_2_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTdB_2_1.setForeground(Color.WHITE);
-		lblTdB_2_1.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 98));
-		lblTdB_2_1.setBounds(220, 74, 214, 105);
-		tdb2.add(lblTdB_2_1);
+		JLabel lblDuree = new JLabel("Dur\u00E9e de remboursement");
+		lblDuree.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDuree.setForeground(Color.WHITE);
+		lblDuree.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
+		lblDuree.setBounds(10, 147, 227, 31);
+		panelEmprunt.add(lblDuree);
 		
-		JPanel tdb3 = new JPanel();
-		tdb3.setBounds(45, 381, 435, 223);
-		tdb3.setLayout(null);
-		tdb3.setBorder(null);
-		tdb3.setBackground(new Color(102, 204, 153));
-		accueil.add(tdb3);
+		JLabel lblTauxDuPrt = new JLabel("Taux du pr\u00EAt");
+		lblTauxDuPrt.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTauxDuPrt.setForeground(Color.WHITE);
+		lblTauxDuPrt.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
+		lblTauxDuPrt.setBounds(485, 39, 124, 31);
+		panelEmprunt.add(lblTauxDuPrt);
 		
-		JLabel lblTdB_3 = new JLabel("Total des transactions");
-		lblTdB_3.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblTdB_3.setForeground(Color.WHITE);
-		lblTdB_3.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 38));
-		lblTdB_3.setBounds(10, 11, 415, 36);
-		tdb3.add(lblTdB_3);
+		JLabel lblTauxDuPrt_1 = new JLabel("%");
+		lblTauxDuPrt_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTauxDuPrt_1.setForeground(Color.WHITE);
+		lblTauxDuPrt_1.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
+		lblTauxDuPrt_1.setBounds(674, 39, 28, 31);
+		panelEmprunt.add(lblTauxDuPrt_1);
 		
-		JLabel lblTdB_3_1 = new JLabel("200");
-		lblTdB_3_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTdB_3_1.setForeground(Color.WHITE);
-		lblTdB_3_1.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 98));
-		lblTdB_3_1.setBounds(176, 73, 214, 105);
-		tdb3.add(lblTdB_3_1);
+		JLabel lblMois = new JLabel("mois");
+		lblMois.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMois.setForeground(Color.WHITE);
+		lblMois.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
+		lblMois.setBounds(345, 147, 48, 31);
+		panelEmprunt.add(lblMois);
 		
-		JPanel tdb4 = new JPanel();
-		tdb4.setBounds(490, 381, 480, 223);
-		tdb4.setLayout(null);
-		tdb4.setBorder(null);
-		tdb4.setBackground(new Color(102, 204, 153));
-		accueil.add(tdb4);
+		JLabel lblTypePret = new JLabel("Type de pr\u00EAt");
+		lblTypePret.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTypePret.setForeground(Color.WHITE);
+		lblTypePret.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
+		lblTypePret.setBounds(10, 91, 156, 31);
+		panelEmprunt.add(lblTypePret);
 		
-		JLabel lblTdB_4 = new JLabel("Montant par client");
-		lblTdB_4.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblTdB_4.setForeground(Color.WHITE);
-		lblTdB_4.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 38));
-		lblTdB_4.setBounds(10, 11, 460, 44);
-		tdb4.add(lblTdB_4);
+		textFieldCapEmprunte = new JTextField();
+		textFieldCapEmprunte.setForeground(new Color(173, 216, 230));
+		textFieldCapEmprunte.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
+		textFieldCapEmprunte.setColumns(10);
+		textFieldCapEmprunte.setBounds(176, 39, 203, 31);
+		panelEmprunt.add(textFieldCapEmprunte);
 		
-		JLabel lblTdB_4_1 = new JLabel("200");
-		lblTdB_4_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTdB_4_1.setForeground(Color.WHITE);
-		lblTdB_4_1.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 98));
-		lblTdB_4_1.setBounds(225, 76, 214, 105);
-		tdb4.add(lblTdB_4_1);
+		textFieldDuree = new JTextField();
+		textFieldDuree.setForeground(new Color(173, 216, 230));
+		textFieldDuree.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
+		textFieldDuree.setColumns(10);
+		textFieldDuree.setBounds(247, 147, 85, 31);
+		panelEmprunt.add(textFieldDuree);
+		
+		
 		
 		
 		/*
@@ -281,12 +317,13 @@ public class TableauDeBord {
 		lblChercherUnClient.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 28));
 		mesClients.add(lblChercherUnClient);
 		
-		textField = new JTextField();
-		textField.setForeground(new Color(173, 216, 230));
-		textField.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
-		textField.setColumns(10);
-		textField.setBounds(769, 161, 166, 31);
-		mesClients.add(textField);
+		nbcompte = new JTextField();
+		nbcompte.setForeground(new Color(173, 216, 230));
+		nbcompte.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
+		nbcompte.setColumns(10);
+		nbcompte.setBounds(769, 161, 166, 31);
+		mesClients.add(nbcompte);
+		//nbcompte.addActionListener(new RechercheClient());
 		
 		JLabel lblMontant_1_1 = new JLabel("N\u00B0 de compte");
 		lblMontant_1_1.setHorizontalAlignment(SwingConstants.CENTER);
@@ -429,52 +466,120 @@ public class TableauDeBord {
 		lblEmpruntEnCours_1.setBounds(237, 246, 116, 43);
 		profil.add(lblEmpruntEnCours_1);
 		
+		
+		
+		
 		/*
-		 *  Panel calculer emprunt :
+		 * Panel Accueil :
 		 */
 		
-		JPanel calculEmprunt = new JPanel();
-		calculEmprunt.setBackground(Color.WHITE);
-		calculEmprunt.setBounds(283, 0, 1007, 718);
-		frame.getContentPane().add(calculEmprunt);
-		calculEmprunt.setLayout(null);
+		JPanel accueil = new JPanel();
+		accueil.setBounds(283, 0, 1022, 710);
+		frame.getContentPane().add(accueil);
+		accueil.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
+		accueil.setBackground(Color.WHITE);
+		accueil.setLayout(null);
 		
-		JPanel panelEmprunt = new JPanel();
-		panelEmprunt.setBounds(161, 300, 728, 248);
-		panelEmprunt.setLayout(null);
-		panelEmprunt.setBackground(new Color(173, 216, 230));
-		calculEmprunt.add(panelEmprunt);
+		JPanel tdb1 = new JPanel();
+		tdb1.setBounds(45, 147, 435, 223);
+		tdb1.setFocusCycleRoot(true);
+		tdb1.setBorder(null);
+		tdb1.setBackground(new Color(102, 204, 153));
+		accueil.add(tdb1);
+		tdb1.setLayout(null);
 		
-		JLabel lblFaireUnEmprunt = new JLabel("Calculer un pr\u00EAt");
-		lblFaireUnEmprunt.setBounds(388, 204, 261, 43);
-		lblFaireUnEmprunt.setHorizontalAlignment(SwingConstants.CENTER);
-		lblFaireUnEmprunt.setForeground(new Color(153, 153, 255));
-		lblFaireUnEmprunt.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 28));
-		calculEmprunt.add(lblFaireUnEmprunt);
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setBounds(10, 71, 61, 69);
+		tdb1.add(lblNewLabel);
+		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\kater\\OneDrive\\Documents\\L3-SNGI\\S5\\Conception et programmation orient\u00E9s objet\\Fichiers Java\\Bankit\\Img\\Membres.jpg.png"));
 		
-		textFieldCapitalEmp = new JTextField();
-		textFieldCapitalEmp.setForeground(new Color(173, 216, 230));
-		textFieldCapitalEmp.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
-		textFieldCapitalEmp.setBounds(176, 39, 166, 31);
-		panelEmprunt.add(textFieldCapitalEmp);
-		textFieldCapitalEmp.setColumns(10);
+		JLabel lblTdB_1 = new JLabel("Nombre d'adh\u00E9rents");
+		lblTdB_1.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblTdB_1.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 38));
+		lblTdB_1.setForeground(new Color(255, 255, 255));
+		lblTdB_1.setBounds(10, 11, 415, 38);
+		tdb1.add(lblTdB_1);
 		
-		JLabel lblCapitalEmp = new JLabel("Capital emprunt\u00E9");
-		lblCapitalEmp.setBackground(Color.WHITE);
-		lblCapitalEmp.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCapitalEmp.setForeground(Color.WHITE);
-		lblCapitalEmp.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
-		lblCapitalEmp.setBounds(10, 39, 156, 31);
-		panelEmprunt.add(lblCapitalEmp);
+		JLabel lblTdB_1_1 = new JLabel("200");
+		lblTdB_1_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTdB_1_1.setForeground(Color.WHITE);
+		lblTdB_1_1.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 98));
+		lblTdB_1_1.setBounds(166, 71, 214, 105);
+		tdb1.add(lblTdB_1_1);
 		
-		JComboBox comboBoxTypePret = new JComboBox();
-		comboBoxTypePret.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		comboBoxTypePret.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
-		comboBoxTypePret.setForeground(new Color(173, 216, 230));
-		comboBoxTypePret.setModel(new DefaultComboBoxModel(new String[] {"pr\u00EAt immobilier", "cr\u00E9dit \u00E0 la consommation", "hypoth\u00E8que", "pr\u00EAt \u00E9tudiant"}));
-		comboBoxTypePret.setBounds(176, 95, 227, 31);
-		comboBoxTypePret.setBackground(Color.WHITE);
-		panelEmprunt.add(comboBoxTypePret);
+		JLabel lblTableauDeBord = new JLabel("Tableau de bord");
+		lblTableauDeBord.setBounds(45, 81, 450, 43);
+		lblTableauDeBord.setHorizontalAlignment(SwingConstants.LEFT);
+		lblTableauDeBord.setForeground(new Color(153, 153, 255));
+		lblTableauDeBord.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 48));
+		accueil.add(lblTableauDeBord);
+		
+		JPanel tdb2 = new JPanel();
+		tdb2.setBounds(490, 147, 480, 223);
+		tdb2.setLayout(null);
+		tdb2.setBorder(null);
+		tdb2.setBackground(new Color(102, 204, 153));
+		accueil.add(tdb2);
+		
+		JLabel lblTdB_2 = new JLabel("Taux de satisfaction");
+		lblTdB_2.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblTdB_2.setForeground(Color.WHITE);
+		lblTdB_2.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 38));
+		lblTdB_2.setBounds(10, 11, 460, 39);
+		tdb2.add(lblTdB_2);
+		
+		JLabel lblTdB_2_1 = new JLabel("200");
+		lblTdB_2_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTdB_2_1.setForeground(Color.WHITE);
+		lblTdB_2_1.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 98));
+		lblTdB_2_1.setBounds(220, 74, 214, 105);
+		tdb2.add(lblTdB_2_1);
+		
+		JPanel tdb3 = new JPanel();
+		tdb3.setBounds(45, 381, 435, 223);
+		tdb3.setLayout(null);
+		tdb3.setBorder(null);
+		tdb3.setBackground(new Color(102, 204, 153));
+		accueil.add(tdb3);
+		
+		JLabel lblTdB_3 = new JLabel("Total des transactions");
+		lblTdB_3.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblTdB_3.setForeground(Color.WHITE);
+		lblTdB_3.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 38));
+		lblTdB_3.setBounds(10, 11, 415, 36);
+		tdb3.add(lblTdB_3);
+		
+		JLabel lblTdB_3_1 = new JLabel("200");
+		lblTdB_3_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTdB_3_1.setForeground(Color.WHITE);
+		lblTdB_3_1.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 98));
+		lblTdB_3_1.setBounds(176, 73, 214, 105);
+		tdb3.add(lblTdB_3_1);
+		
+		JPanel tdb4 = new JPanel();
+		tdb4.setBounds(490, 381, 480, 223);
+		tdb4.setLayout(null);
+		tdb4.setBorder(null);
+		tdb4.setBackground(new Color(102, 204, 153));
+		accueil.add(tdb4);
+		
+		JLabel lblTdB_4 = new JLabel("Montant par client");
+		lblTdB_4.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblTdB_4.setForeground(Color.WHITE);
+		lblTdB_4.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 38));
+		lblTdB_4.setBounds(10, 11, 460, 44);
+		tdb4.add(lblTdB_4);
+		
+		JLabel lblTdB_4_1 = new JLabel("200");
+		lblTdB_4_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTdB_4_1.setForeground(Color.WHITE);
+		lblTdB_4_1.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 98));
+		lblTdB_4_1.setBounds(225, 76, 214, 105);
+		tdb4.add(lblTdB_4_1);
+		
+		
+		
+		
 		
 		/*
 		 * Panel ajout Agent :
@@ -512,6 +617,7 @@ public class TableauDeBord {
 		textFieldCapitalEmp.setBounds(112, 157, 166, 31);
 		panelAjout.add(textFieldCapitalEmp);
 		textFieldCapitalEmp.setColumns(10);
+
 		
 		JLabel lblMdPactuel;
 		lblMdPactuel = new JLabel("Mot de passe actuel");
@@ -615,57 +721,6 @@ public class TableauDeBord {
 		lblChangerMotDe.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 28));
 		lblChangerMotDe.setBounds(611, 362, 349, 43);
 		ajoutAgent.add(lblChangerMotDe);
-		
-		JLabel lblDuree = new JLabel("Dur\u00E9e de remboursement");
-		lblDuree.setHorizontalAlignment(SwingConstants.CENTER);
-		lblDuree.setForeground(Color.WHITE);
-		lblDuree.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
-		lblDuree.setBounds(10, 147, 227, 31);
-		panelEmprunt.add(lblDuree);
-		
-		JLabel lblTaux = new JLabel("0");
-		lblTaux.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTaux.setBorder(new LineBorder(Color.WHITE, 1, true));
-		lblTaux.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
-		lblTaux.setForeground(Color.WHITE);
-		lblTaux.setBackground(Color.WHITE);
-		lblTaux.setBounds(616, 39, 54, 31);
-		panelEmprunt.add(lblTaux);
-		
-		JLabel lblTauxDuPrt = new JLabel("Taux du pr\u00EAt");
-		lblTauxDuPrt.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTauxDuPrt.setForeground(Color.WHITE);
-		lblTauxDuPrt.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
-		lblTauxDuPrt.setBounds(485, 39, 124, 31);
-		panelEmprunt.add(lblTauxDuPrt);
-		
-		JLabel lblTauxDuPrt_1 = new JLabel("%");
-		lblTauxDuPrt_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTauxDuPrt_1.setForeground(Color.WHITE);
-		lblTauxDuPrt_1.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
-		lblTauxDuPrt_1.setBounds(674, 39, 28, 31);
-		panelEmprunt.add(lblTauxDuPrt_1);
-		
-		JLabel lblMois = new JLabel("mois");
-		lblMois.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMois.setForeground(Color.WHITE);
-		lblMois.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
-		lblMois.setBounds(345, 147, 48, 31);
-		panelEmprunt.add(lblMois);
-		
-		JLabel lblTypePret = new JLabel("Type de pr\u00EAt");
-		lblTypePret.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTypePret.setForeground(Color.WHITE);
-		lblTypePret.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
-		lblTypePret.setBounds(10, 91, 156, 31);
-		panelEmprunt.add(lblTypePret);
-		
-		textFieldDuree = new JTextField();
-		textFieldDuree.setForeground(new Color(173, 216, 230));
-		textFieldDuree.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
-		textFieldDuree.setColumns(10);
-		textFieldDuree.setBounds(247, 147, 85, 31);
-		panelEmprunt.add(textFieldDuree);
 
 		
 		/*
@@ -771,6 +826,30 @@ public class TableauDeBord {
 		btnCalculEmprunt.setFocusPainted(false);
 		btnCalculEmprunt.setBorderPainted(false);
 		btnCalculEmprunt.setBackground(new Color(102, 153, 255));
+		
+		btnCalculEmprunt.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				String sc = textFieldDuree.getText();
+				String sd = textFieldCapEmprunte.getText();
+				
+				try {
+					double capitalEmprunte = Double.parseDouble(sc);
+					double dureeRembourse = Double.parseDouble(sd);
+					double total;
+					double capitalE;
+					
+					tauxInteret = tauxInteret * 0.01;   //Mettre de taux d'interet en pourcentage 3,2 => 0.032 = 3,2%.
+					capitalE = 1000*(capitalEmprunte + (capitalEmprunte*tauxInteret));
+		        	total = 1000*(capitalE/dureeRembourse);
+		        	JOptionPane.showMessageDialog(frame, "Resultat = "+total,"Montant a payer par mois",JOptionPane.PLAIN_MESSAGE);
+		        	
+				}catch (NumberFormatException e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage(),"Erreur de format", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
 		
 	
 	}
