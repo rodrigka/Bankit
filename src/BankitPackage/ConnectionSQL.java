@@ -1,8 +1,8 @@
 package BankitPackage;
 
 import java.sql.Connection;
-
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -13,12 +13,17 @@ public class ConnectionSQL {
 	Connection c;
 	Statement statement;
 	ResultSet result;
+	ResultSet rmontant;
+	ResultSet rdateconn;
+	ResultSet remprunt;
+	PreparedStatement ps;
+	
 	
 	public void connexion() {
         try {
             final String control = "org.sqlite.JDBC";
             Class.forName(control);
-            final String url_bd = "jdbc:sqlite:BankitDb.db";
+            final String url_bd = "jdbc:sqlite:BankitBd.db";
             c = (Connection) DriverManager.getConnection(url_bd);
             statement = c.createStatement();
         } catch (ClassNotFoundException | SQLException ex) {

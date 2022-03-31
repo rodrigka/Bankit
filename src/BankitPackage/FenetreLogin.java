@@ -79,7 +79,7 @@ public class FenetreLogin {
 		logo = new JLabel("");
 		logo.setBounds(71, 212, 173, 173);
 		logo.setHorizontalAlignment(SwingConstants.CENTER);
-		logo.setIcon(new ImageIcon("C:\\Users\\kater\\OneDrive\\Documents\\L3-SNGI\\S5\\Conception et programmation orient\u00E9s objet\\Fichiers Java\\Bankit\\Img\\LogoWhite.png"));
+		logo.setIcon(new ImageIcon("Img\\LogoWhite.png"));
 		panel.add(logo);
 		
 		
@@ -124,6 +124,18 @@ public class FenetreLogin {
 		TitreConnection.setForeground(new Color(102, 153, 255));
 		TitreConnection.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 24));
 		panel_1.add(TitreConnection);
+		
+		lbl3 = new JLabel("Vous n'avez pas encore les codes d'acces ?");
+		lbl3.setBounds(72, 420, 368, 30);
+		lbl3.setForeground(new Color(102, 153, 255));
+		lbl3.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 14));
+		panel_1.add(lbl3);
+		
+		lbl4 = new JLabel("Demandez a votre responsable d'agence !");
+		lbl4.setBounds(72, 442, 368, 20);
+		lbl4.setForeground(new Color(102, 153, 255));
+		lbl4.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 14));
+		panel_1.add(lbl4);
 
 		JButton btnEntrer = new JButton("Entrer");
 		btnEntrer.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -149,29 +161,18 @@ public class FenetreLogin {
 					
 					if(c.result.next()) {
 						frame.setVisible(false);
-						TableauDeBord tdb = new TableauDeBord();
+						FenetreApplication tdb = new FenetreApplication();
 						tdb.getFrame().setVisible(true);
 					}else {
 						JOptionPane.showMessageDialog(null,"Login ou mot de passe invalides", "Oh oh !", JOptionPane.INFORMATION_MESSAGE);
 					}
 					
+					c.deconnexion();
 				}catch (SQLException ex) {
 					JOptionPane.showMessageDialog(null, ex.getMessage(),"Erreur de connexion", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
 
-		
-		lbl3 = new JLabel("Vous n'avez pas encore les codes d'acces ?");
-		lbl3.setBounds(72, 420, 368, 30);
-		lbl3.setForeground(new Color(102, 153, 255));
-		lbl3.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 14));
-		panel_1.add(lbl3);
-		
-		lbl4 = new JLabel("Demandez a votre responsable d'agence !");
-		lbl4.setBounds(72, 442, 368, 20);
-		lbl4.setForeground(new Color(102, 153, 255));
-		lbl4.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 14));
-		panel_1.add(lbl4);
 	}
 }
