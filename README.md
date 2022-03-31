@@ -1,6 +1,6 @@
 # Création de l'application : Bankit 🏦
 
-Bankit est une application de gestion bancaire pour les agences. Le but est de pouvoir repondre aux questions des clients facilement et les aider à faire des transactions dans leur compte bancaire, comme lors que quelqu'un est recu en agence.
+Bankit est une application de gestion bancaire pour les agences. Le but est de pouvoir repondre aux questions des clients facilement et les aider à faire des transactions dans leur compte bancaire, comme lors que quelqu'un est reçu en agence.
 
 ## La description
 
