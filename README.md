@@ -26,8 +26,13 @@ Les classes codées en Java sont donc dédiées au déploiment des differentes f
 
 * Initialiser le programme dans la classe : FenetreLogin
 * Introduisez votre Login et votre mot de passe
-* La fenettre de l'application se lancera, vous pourrez donc executer les actions que vous souhaitez.
-* Puces étape par étape
+* La fenettre de l'application se lancera, vous pourrez donc executer les actions que vous souhaitez :
+    * Réalisation d'une transaction
+    * Recherche des informations d'un client
+    * Recherche des informations d'une transaction
+    * Calcul d'une mensualité en fonction du type de pret
+    * Changement du mot de passe de l'agent
+    * Ajout d'un agent
 
 ## Aide
 
