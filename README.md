@@ -7,8 +7,9 @@ Bankit est une application de gestion bancaire pour les agences. Le but est de p
 Grâce à la base de données, nous gérons **les agents** avec leurs informations de login, **les clients** avec leur numéro de compte, le montant, la date de création du compte, et une valeur qui indique s'il a un pret en cours, et **les transactions** faites, avec le montant, la date et le numéro de compte de la personne qui a réalisé la transaction.
 Les classes codées en Java sont donc dédiées au déploiment des differentes fenetres graphiques, ainsi qu'aux differentes methodes classées comme l'indique ci-dessous :
 * Les methodes **de requette** : dont leur role principal est de rechercher, créer ou modifier les informations dans la base de données,
-* les methodes **de connexion** : sur la classe ConnectionSQL, dont leur rôle est établir et fermer la connexion avec la base de données, et
-* les methodes **de calcul** : dont leur role est calculer le taux d'intéret en fonction du type de prêt, et de calculer la mensualité par concéquent.
+* les methodes **de connexion** : sur la classe ConnectionSQL, dont leur rôle est établir et fermer la connexion avec la base de données,
+* les methodes **de calcul** : dont leur role est calculer le taux d'intéret en fonction du type de prêt, et de calculer la mensualité par concéquent, et
+* Les methodes **d'intéraction avec la fenetre graphique** : situées dans les clases qu'inicialisent les fenetres, permettent de rendre les intéractions plus dynamiques.
 
 ## Commencer
 
