@@ -1,44 +1,15 @@
 package BankitPackage;
 
 
-import java.awt.event.ActionListener; 
-import java.awt.event.ActionEvent;
-import java.awt.EventQueue;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import java.awt.Color;
-import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.SwingConstants;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.Cursor;
-import javax.swing.border.BevelBorder;
-import javax.swing.JTable;
-import java.awt.Component;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
-import javax.swing.JProgressBar;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JComboBox;
-import javax.swing.ButtonGroup;
-import javax.swing.ButtonModel;
-import javax.swing.DefaultComboBoxModel;
+import java.awt.event.*; 
+import javax.swing.*;
+import java.awt.*;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.JFormattedTextField;
-import javax.swing.JPasswordField;
-import javax.swing.JCheckBox;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.sql.*;
 import java.lang.Math;
-import javax.swing.JScrollPane;
 
-public class FenetreApplication {
+public class FenetreApplication implements Requete,CalculEmprunt {
 
 	private double tauxInteret = 0;
 	private JFrame frame;
@@ -54,7 +25,14 @@ public class FenetreApplication {
 	private JPasswordField passwordajout;
 	private JPasswordField passwordactuel;
 	private JTextField textFieldCapEmprunte;
-	private int nbadherants;
+	private JRadioButton rdbtnDepot;
+	private JRadioButton rdbtnRetrait;
+	private JLabel lblMontantSurLe_1;
+	private JLabel lblDernireConnexion_1;
+	private JLabel lblEmpruntEnCours_1;
+	private JLabel lblTaux;
+	private JCheckBox checkBoxAdmin;
+	private JLabel lblChangerMotDe;
 
 	public JFrame getFrame() {
 		return frame;
@@ -63,22 +41,7 @@ public class FenetreApplication {
 	public void setFrame(JFrame frame) {
 		this.frame = frame;
 	}
-
-	public JTable getTable() {
-		return table;
-	}
-
-	public void setTable(JTable table) {
-		this.table = table;
-	}
 	
-	public JTextField getNbcompte() {
-		return nbcompte;
-	}
-
-	public void setNbcompte(JTextField nbcompte) {
-		this.nbcompte = nbcompte;
-	}
 	
 	/**
 	 * Launch the application.
@@ -107,32 +70,6 @@ public class FenetreApplication {
 		table();
 	}
 
-	// Methode pour recuperer les données de la table transactions
-	
-	private void table() {
-		ConnectionSQL c = new ConnectionSQL();
-		try {
-			String [] entete = {"N° de compte","Montant Transféré", "Date Transfert"};
-			String [] ligne = new String[4];
-			
-			DefaultTableModel modele = new DefaultTableModel(null, entete);
-			String requete = "SELECT * FROM Transactions";
-			c.connexion();
-			c.result = c.statement.executeQuery(requete);
-			
-			while(c.result.next()) {
-				ligne [0] = c.result.getString("numCompte");
-				ligne [1] = c.result.getString("montantTransfert");
-				ligne [2] = c.result.getString("dateTransfert");
-				modele.addRow(ligne);
-			}
-			
-			table.setModel(modele);
-			c.deconnexion();
-		}catch(Exception e) {
-			
-		}
-	}
 	
 	/**
 	 * Initialize the contents of the frame.
@@ -165,12 +102,6 @@ public class FenetreApplication {
 		menu.setBounds(0, 0, 284, 693);
 		frame.getContentPane().add(menu);
 		menu.setLayout(null);
-		
-		JLabel PrenomNom = new JLabel("Prenom Nom");
-		PrenomNom.setBounds(10, 161, 112, 19);
-		PrenomNom.setForeground(new Color(255, 255, 255));
-		PrenomNom.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
-		menu.add(PrenomNom);
 		
 		JLabel NbAgent = new JLabel("N\u00B0 Agent : 12345");
 		NbAgent.setForeground(Color.WHITE);
@@ -300,14 +231,14 @@ public class FenetreApplication {
 		textFieldDate.setBounds(123, 56, 166, 31);
 		realiserTransaction.add(textFieldDate);
 		
-		JRadioButton rdbtnRetrait = new JRadioButton("Retrait");
+		rdbtnRetrait = new JRadioButton("Retrait");
 		rdbtnRetrait.setBounds(389, 60, 87, 23);
 		realiserTransaction.add(rdbtnRetrait);
 		rdbtnRetrait.setForeground(Color.WHITE);
 		rdbtnRetrait.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
 		rdbtnRetrait.setBackground(new Color(173, 216, 230));
 		
-		JRadioButton rdbtnDepot = new JRadioButton("Depot");
+		rdbtnDepot = new JRadioButton("Depot");
 		rdbtnDepot.setBounds(389, 86, 87, 23);
 		realiserTransaction.add(rdbtnDepot);
 		rdbtnDepot.setBackground(new Color(173, 216, 230));
@@ -343,7 +274,7 @@ public class FenetreApplication {
 		lblEmpruntEnCours.setBounds(10, 246, 236, 43);
 		profil.add(lblEmpruntEnCours);
 		
-		JLabel lblMontantSurLe_1 = new JLabel("0");
+		lblMontantSurLe_1 = new JLabel("0");
 		lblMontantSurLe_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMontantSurLe_1.setBorder(new LineBorder(new Color(255, 255, 255), 1, true));
 		lblMontantSurLe_1.setBackground(Color.WHITE);
@@ -352,7 +283,7 @@ public class FenetreApplication {
 		lblMontantSurLe_1.setBounds(256, 96, 116, 43);
 		profil.add(lblMontantSurLe_1);
 		
-		JLabel lblDernireConnexion_1 = new JLabel("0");
+		lblDernireConnexion_1 = new JLabel("0");
 		lblDernireConnexion_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDernireConnexion_1.setForeground(Color.WHITE);
 		lblDernireConnexion_1.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 20));
@@ -361,7 +292,7 @@ public class FenetreApplication {
 		lblDernireConnexion_1.setBounds(225, 166, 116, 43);
 		profil.add(lblDernireConnexion_1);
 		
-		JLabel lblEmpruntEnCours_1 = new JLabel("Non");
+		lblEmpruntEnCours_1 = new JLabel("Non");
 		lblEmpruntEnCours_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblEmpruntEnCours_1.setForeground(Color.WHITE);
 		lblEmpruntEnCours_1.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 20));
@@ -369,15 +300,34 @@ public class FenetreApplication {
 		lblEmpruntEnCours_1.setBackground(Color.WHITE);
 		lblEmpruntEnCours_1.setBounds(237, 246, 116, 43);
 		profil.add(lblEmpruntEnCours_1);
+
+		JButton btnSauverTransac = new JButton("Sauvegarder");
+		btnSauverTransac.setBackground(new Color(102, 153, 255));
+		btnSauverTransac.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
+		btnSauverTransac.setForeground(Color.WHITE);
+		btnSauverTransac.setBounds(336, 135, 140, 31);
+		realiserTransaction.add(btnSauverTransac);
+		btnSauverTransac.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				sauverTransac(event);
+				rechercheInfosCompte(event);
+			}
+		});
+		
+		nbcompte = new JTextField();
+		nbcompte.setForeground(new Color(173, 216, 230));
+		nbcompte.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
+		nbcompte.setColumns(10);
+		nbcompte.setBounds(769, 161, 166, 31);
+		mesClients.add(nbcompte);
+		nbcompte.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event){
+				rechercheInfosCompte(event);
+			}
+		});
 		
 		
-		
-		
-		
-		
-		
-		
-		
+
 		
 		
 		/**
@@ -411,7 +361,7 @@ public class FenetreApplication {
 		lblCapitalEmp.setBounds(10, 39, 156, 31);
 		panelEmprunt.add(lblCapitalEmp);
 		
-		JLabel lblTaux = new JLabel("0");
+		lblTaux = new JLabel("0");
 		lblTaux.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTaux.setBorder(new LineBorder(Color.WHITE, 1, true));
 		lblTaux.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
@@ -469,7 +419,38 @@ public class FenetreApplication {
 		textFieldDuree.setBounds(247, 147, 85, 31);
 		panelEmprunt.add(textFieldDuree);
 		
+		JComboBox<String> comboBoxTypePret = new JComboBox<String>();
+		comboBoxTypePret.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		comboBoxTypePret.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
+		comboBoxTypePret.setForeground(new Color(173, 216, 230));
+		comboBoxTypePret.setModel(new DefaultComboBoxModel<String>(new String[] {"", "pret immobilier", "credit consommation", "hypotheque", "pret etudiant"}));
+		comboBoxTypePret.setBounds(176, 95, 227, 31);
+		comboBoxTypePret.setBackground(Color.WHITE);
+		panelEmprunt.add(comboBoxTypePret);
+		comboBoxTypePret.addItemListener(new ItemListener(){
+			@Override
+	        public void itemStateChanged(ItemEvent e){
+				choixTypePret(e);
+			}
+        	
+		});
 		
+		JButton btnCalculEmprunt = new JButton("Calculer");
+		btnCalculEmprunt.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnCalculEmprunt.setAlignmentY(Component.TOP_ALIGNMENT);
+		btnCalculEmprunt.setBounds(605, 205, 113, 32);
+		panelEmprunt.add(btnCalculEmprunt);
+		btnCalculEmprunt.setForeground(Color.WHITE);
+		btnCalculEmprunt.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
+		btnCalculEmprunt.setFocusPainted(false);
+		btnCalculEmprunt.setBorderPainted(false);
+		btnCalculEmprunt.setBackground(new Color(102, 153, 255));
+		btnCalculEmprunt.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				calculEmprunt(e);
+			}
+		});
 		
 		
 		/**
@@ -569,7 +550,7 @@ public class FenetreApplication {
 		passwordajout.setBounds(169, 122, 166, 31);
 		panelAjout_1.add(passwordajout);
 		
-		JCheckBox checkBoxAdmin = new JCheckBox("Admin");
+		checkBoxAdmin = new JCheckBox("Admin");
 		checkBoxAdmin.setBackground(new Color(173, 216, 230));
 		checkBoxAdmin.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		checkBoxAdmin.setForeground(Color.WHITE);
@@ -577,18 +558,43 @@ public class FenetreApplication {
 		checkBoxAdmin.setBounds(394, 59, 99, 23);
 		panelAjout_1.add(checkBoxAdmin);
 		
-		JLabel lblChangerMotDe = new JLabel("Changer mot de passe");
+		lblChangerMotDe = new JLabel("Changer mot de passe");
 		lblChangerMotDe.setHorizontalAlignment(SwingConstants.TRAILING);
 		lblChangerMotDe.setForeground(new Color(153, 153, 255));
 		lblChangerMotDe.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 28));
 		lblChangerMotDe.setBounds(611, 362, 349, 43);
 		ajoutAgent.add(lblChangerMotDe);
 
+		JButton btnAjoutAgent = new JButton("Ajouter");
+		btnAjoutAgent.setBackground(new Color(102, 153, 255));
+		btnAjoutAgent.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
+		btnAjoutAgent.setForeground(Color.WHITE);
+		btnAjoutAgent.setBounds(364, 191, 117, 31);
+		panelAjout_1.add(btnAjoutAgent);
+		btnAjoutAgent.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ajoutAgent(e);
+			}
+		});
 
+		JButton btnChanger = new JButton("Changer");
+		btnChanger.setBackground(new Color(102, 153, 255));
+		btnChanger.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
+		btnChanger.setForeground(Color.WHITE);
+		btnChanger.setBounds(392, 205, 108, 31);
+		panelAjout.add(btnChanger);
+		btnChanger.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				changerPassword(e);
+			}
+		});
+		
+		
 		
 		
 		/**
-		 * Buttons :
+		 * Buttons d'affichage JPanels :
 		 */
 		
 		JButton configuration = new JButton("Configuration");
@@ -651,248 +657,231 @@ public class FenetreApplication {
 		btnActualiser.setBounds(406, 574, 134, 32);
 		mesClients.add(btnActualiser);
 		btnActualiser.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnActualiser.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				table();
-			}
-		});
 		btnActualiser.setForeground(new Color(255, 255, 255));
 		btnActualiser.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
 		btnActualiser.setFocusPainted(false);
 		btnActualiser.setBorderPainted(false);
 		btnActualiser.setBackground(new Color(102, 153, 255));
-		
-		
-		JButton btnSauverTransac = new JButton("Sauvegarder");
-		btnSauverTransac.setBackground(new Color(102, 153, 255));
-		btnSauverTransac.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
-		btnSauverTransac.setForeground(Color.WHITE);
-		btnSauverTransac.setBounds(336, 135, 140, 31);
-		realiserTransaction.add(btnSauverTransac);
-		btnSauverTransac.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				ConnectionSQL c = new ConnectionSQL();
-				try {
-					String numCompte, date;
-					int montant;
-					numCompte = textFieldNCompte.getText();
-					date = textFieldDate.getText();
-					montant = Integer.parseInt(textFieldMontant.getText());
-					boolean depot = rdbtnDepot.isSelected();
-					boolean retrait = rdbtnRetrait.isSelected();
-					c.connexion();
-					
-					if(depot == true){
-						c.statement.executeUpdate("UPDATE Clients SET montantCompte = montantCompte+"+montant
-								+ " WHERE numCompte='"+numCompte+"'");
-						
-						c.statement.executeUpdate("INSERT INTO Transactions(numCompte,montantTransfert,dateTransfert)"
-								+ "VALUES ('"+numCompte+"',"+montant+",'"+date+"')");
-						JOptionPane.showMessageDialog(null,"Votre transaction a été validée", "Validé !", JOptionPane.INFORMATION_MESSAGE);
-						
-					}else {
-						if (retrait == true){
-							montant = -1 * montant;   // Faire que la valeur soit négative.
-							c.statement.executeUpdate("UPDATE Clients SET montantCompte = montantCompte"+montant
-									+ " WHERE numCompte='"+numCompte+"'");
-							c.statement.executeUpdate("INSERT INTO Transactions(numCompte,montantTransfert,dateTransfert)"
-									+ "VALUES ('"+numCompte+"',"+montant+",'"+date+"')");
-							JOptionPane.showMessageDialog(null,"Votre transaction a été validée", "Validé !", JOptionPane.INFORMATION_MESSAGE);
-							
-						}else {
-							JOptionPane.showMessageDialog(null,"Veuillez indiquer de quel type de transaction il s'agit", "Oh oh !", JOptionPane.INFORMATION_MESSAGE);
-						}
-					}
-					table();
-					c.deconnexion();
-					
-				}catch (SQLException exe) {
-					JOptionPane.showMessageDialog(null, exe.getMessage(),"Erreur de connexion", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		});
-		
-		
-		nbcompte = new JTextField();
-		nbcompte.setForeground(new Color(173, 216, 230));
-		nbcompte.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
-		nbcompte.setColumns(10);
-		nbcompte.setBounds(769, 161, 166, 31);
-		mesClients.add(nbcompte);
-		nbcompte.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event){
-				ConnectionSQL c = new ConnectionSQL();
-				try {
-					String numcompte = nbcompte.getText();
-					c.connexion();
-					
-					String check ="SELECT * FROM Clients "
-								+ "WHERE numCompte='"+numcompte+"'";
-					c.result = c.statement.executeQuery(check);
-					
-					
-					if(c.result.next()) {
-						int montant = c.result.getInt("montantCompte");
-						lblMontantSurLe_1.setText(String.valueOf(montant));
-						String datedrconn = c.result.getString("dateDerniereConn");
-						lblDernireConnexion_1.setText(datedrconn);
-						int valemprunt = c.result.getInt("emprunt");
-						
-						if (valemprunt == 0) {
-							lblEmpruntEnCours_1.setText("Non");
-						}else {
-							lblEmpruntEnCours_1.setText("Oui");
-						}
-
-					}else {
-						JOptionPane.showMessageDialog(null,"Ce numéro de compte n'existe pas", "Oh oh !", JOptionPane.INFORMATION_MESSAGE);
-					}
-					
-					c.deconnexion();
-				}catch (SQLException ex) {
-					JOptionPane.showMessageDialog(null, ex.getMessage(),"Erreur de connexion", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		});
-		
-		
-		JComboBox comboBoxTypePret = new JComboBox();
-		comboBoxTypePret.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		comboBoxTypePret.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
-		comboBoxTypePret.setForeground(new Color(173, 216, 230));
-		comboBoxTypePret.setModel(new DefaultComboBoxModel(new String[] {"", "pret immobilier", "credit consommation", "hypotheque", "pret etudiant"}));
-		comboBoxTypePret.setBounds(176, 95, 227, 31);
-		comboBoxTypePret.setBackground(Color.WHITE);
-		panelEmprunt.add(comboBoxTypePret);
-		
-		comboBoxTypePret.addItemListener(new ItemListener(){
-			
-			@Override
-	        public void itemStateChanged(ItemEvent e){
-				
-				if(e.getStateChange()==ItemEvent.SELECTED){
-				
-		        	if (e.getItem().equals("pret immobilier")){
-		            	tauxInteret = 1.2;
-		            } else if (e.getItem().equals("credit consommation")){
-		            	tauxInteret = 3.2;
-		            } else if (e.getItem().equals("hypotheque")){
-		            	tauxInteret = 0.8;
-		            } else if (e.getItem().equals("pret etudiant")){
-		            	tauxInteret = 0.5;
-		            }
-		        	
-		        	lblTaux.setText(String.valueOf(tauxInteret));
-				}
-			}
-        	
-		});
-		
-		
-		JButton btnCalculEmprunt = new JButton("Calculer");
-		btnCalculEmprunt.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnCalculEmprunt.setAlignmentY(Component.TOP_ALIGNMENT);
-		btnCalculEmprunt.setBounds(605, 205, 113, 32);
-		panelEmprunt.add(btnCalculEmprunt);
-		btnCalculEmprunt.setForeground(Color.WHITE);
-		btnCalculEmprunt.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
-		btnCalculEmprunt.setFocusPainted(false);
-		btnCalculEmprunt.setBorderPainted(false);
-		btnCalculEmprunt.setBackground(new Color(102, 153, 255));
-		
-		btnCalculEmprunt.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				
-				String sc = textFieldDuree.getText();
-				String sd = textFieldCapEmprunte.getText();
-				
-				try {
-					double capitalEmprunte = Double.parseDouble(sd);
-					double dureeRembourse = Double.parseDouble(sc);
-					double total;
-					
-					tauxInteret = tauxInteret * 0.01;   //Mettre de taux d'interet en pourcentage 3,2 => 0.032 = 3,2%.
-		        	total = ((capitalEmprunte * (tauxInteret/12) * Math.pow(1+(tauxInteret/12),dureeRembourse)) / (Math.pow(1+(tauxInteret/12),dureeRembourse)-1));
-		        	
-		        	JOptionPane.showMessageDialog(frame, "Resultat = "+total+" euros","Montant a payer par mois",JOptionPane.PLAIN_MESSAGE);
-		        	
-				}catch (NumberFormatException e1) {
-					JOptionPane.showMessageDialog(null, e1.getMessage(),"Erreur de format", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		});
-		
-		
-		JButton btnAjoutAgent = new JButton("Ajouter");
-		btnAjoutAgent.setBackground(new Color(102, 153, 255));
-		btnAjoutAgent.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
-		btnAjoutAgent.setForeground(Color.WHITE);
-		btnAjoutAgent.setBounds(364, 191, 117, 31);
-		panelAjout_1.add(btnAjoutAgent);
-		btnAjoutAgent.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				ConnectionSQL c = new ConnectionSQL();
-				try {
-					String login, password;
-					boolean admin = checkBoxAdmin.isSelected();
-					login = textloginajout.getText();
-					password = passwordajout.getText();
-					String role;
-					
-					c.connexion();
-					if(admin) {
-						role = "Admin";
-						c.statement.executeUpdate("INSERT INTO LoginInfo(login,password,role)"
-													+ "VALUES ('"+login+"','"+password+"','"+role+"')");
-						JOptionPane.showMessageDialog(frame, "Ajout du nouvel agent validé","Validé !",JOptionPane.PLAIN_MESSAGE);
-					}else {
-						role = "notAdmin";
-						c.statement.executeUpdate("INSERT INTO LoginInfo(login,password,role)"
-													+ "VALUES ('"+login+"','"+password+"','"+role+"')");
-						JOptionPane.showMessageDialog(frame, "Ajout du nouvel agent validé","Validé !",JOptionPane.PLAIN_MESSAGE);
-					}
-					c.deconnexion();
-				}catch (SQLException ex) {
-					JOptionPane.showMessageDialog(null, ex.getMessage(),"Erreur de connexion", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		});
-		
-		
-		JButton btnChanger = new JButton("Changer");
-		btnChanger.setBackground(new Color(102, 153, 255));
-		btnChanger.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
-		btnChanger.setForeground(Color.WHITE);
-		btnChanger.setBounds(392, 205, 108, 31);
-		panelAjout.add(btnChanger);
-		btnChanger.addActionListener(new ActionListener() {
+		btnActualiser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ConnectionSQL c = new ConnectionSQL();
-				try {
-					String login, password, newpassword;
-					login = loginConfirm.getText();
-					password = passwordactuel.getText();
-					newpassword = passwordField.getText();
-					c.connexion();
-					
-					String check = "SELECT * FROM LoginInfo "
-							+ "WHERE login='" +login+ "' AND password='"+password+"'";
-					c.result = c.statement.executeQuery(check);
-					
-					if(c.result.next()) {
-						c.statement.executeUpdate("UPDATE LoginInfo SET password = '"+newpassword+"'"
-													+ "WHERE login='"+login+"'");
-						JOptionPane.showMessageDialog(frame, "Changement du mot de passe effectué","Validé !",JOptionPane.PLAIN_MESSAGE);
-					}else {
-						JOptionPane.showMessageDialog(frame, "Login ou mot de passe actuel invalides","Erreur",JOptionPane.PLAIN_MESSAGE);
-					}
-					c.deconnexion();
-				}catch (SQLException ex) {
-					JOptionPane.showMessageDialog(null, ex.getMessage(),"Erreur de connexion", JOptionPane.ERROR_MESSAGE);
-				}
+				table();
 			}
 		});
+		
 	}
+	
+	
+	
+	
+		
+	
+	/**
+	 * Methodes de l'interface Requete
+	 */
+	
+	// Methode pour recuperer les données de la table transactions
+	public void table() {
+		ConnectionSQL c = new ConnectionSQL();
+		try {
+			String [] entete = {"N° de compte","Montant Transféré", "Date Transfert"};
+			String [] ligne = new String[4];
+			
+			DefaultTableModel modele = new DefaultTableModel(null, entete);
+			String requete = "SELECT * FROM Transactions";
+			c.connexion();
+			c.result = c.statement.executeQuery(requete);
+			
+			while(c.result.next()) {
+				ligne [0] = c.result.getString("numCompte");
+				ligne [1] = c.result.getString("montantTransfert");
+				ligne [2] = c.result.getString("dateTransfert");
+				modele.addRow(ligne);
+			}
+			
+			table.setModel(modele);
+			c.deconnexion();
+		}catch(Exception e) {
+			
+		}
+	}
+	
+	
+	public void sauverTransac(ActionEvent event) {
+		ConnectionSQL c = new ConnectionSQL();
+		try {
+			String numCompte, date;
+			int montant;
+			numCompte = textFieldNCompte.getText();
+			date = textFieldDate.getText();
+			montant = Integer.parseInt(textFieldMontant.getText());
+			boolean depot = rdbtnDepot.isSelected();
+			boolean retrait = rdbtnRetrait.isSelected();
+			c.connexion();
+			
+			if(depot == true){
+				c.statement.executeUpdate("UPDATE Clients SET montantCompte = montantCompte+"+montant
+						+ " WHERE numCompte='"+numCompte+"'");
+				
+				c.statement.executeUpdate("INSERT INTO Transactions(numCompte,montantTransfert,dateTransfert)"
+						+ "VALUES ('"+numCompte+"',"+montant+",'"+date+"')");
+				JOptionPane.showMessageDialog(null,"Votre transaction a été validée", "Validé !", JOptionPane.INFORMATION_MESSAGE);
+				
+			}else {
+				if (retrait == true){
+					montant = -1 * montant;   // Faire que la valeur soit négative.
+					c.statement.executeUpdate("UPDATE Clients SET montantCompte = montantCompte"+montant
+							+ " WHERE numCompte='"+numCompte+"'");
+					c.statement.executeUpdate("INSERT INTO Transactions(numCompte,montantTransfert,dateTransfert)"
+							+ "VALUES ('"+numCompte+"',"+montant+",'"+date+"')");
+					JOptionPane.showMessageDialog(null,"Votre transaction a été validée", "Validé !", JOptionPane.INFORMATION_MESSAGE);
+					
+				}else {
+					JOptionPane.showMessageDialog(null,"Veuillez indiquer de quel type de transaction il s'agit", "Oh oh !", JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+			table();
+			c.deconnexion();
+			
+		}catch (SQLException exe) {
+			JOptionPane.showMessageDialog(null, exe.getMessage(),"Erreur de connexion", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	
+	public void rechercheInfosCompte(ActionEvent event) {
+		ConnectionSQL c = new ConnectionSQL();
+		try {
+			String numcompte = nbcompte.getText();
+			c.connexion();
+			
+			String check ="SELECT * FROM Clients "
+						+ "WHERE numCompte='"+numcompte+"'";
+			c.result = c.statement.executeQuery(check);
+			
+			
+			if(c.result.next()) {
+				int montant = c.result.getInt("montantCompte");
+				lblMontantSurLe_1.setText(String.valueOf(montant));
+				String datedrconn = c.result.getString("dateDerniereConn");
+				lblDernireConnexion_1.setText(datedrconn);
+				int valemprunt = c.result.getInt("emprunt");
+				
+				if (valemprunt == 0) {
+					lblEmpruntEnCours_1.setText("Non");
+				}else {
+					lblEmpruntEnCours_1.setText("Oui");
+				}
+
+			}else {
+				JOptionPane.showMessageDialog(null,"Ce numéro de compte n'existe pas", "Oh oh !", JOptionPane.INFORMATION_MESSAGE);
+			}
+			
+			c.deconnexion();
+		}catch (SQLException ex) {
+			JOptionPane.showMessageDialog(null, ex.getMessage(),"Erreur de connexion", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	
+	@SuppressWarnings("deprecation")
+	public void ajoutAgent(MouseEvent e) {
+		ConnectionSQL c = new ConnectionSQL();
+		try {
+			String login, password;
+			boolean admin = checkBoxAdmin.isSelected();
+			login = textloginajout.getText();
+			password = passwordajout.getText();
+			String role;
+			
+			c.connexion();
+			if(admin) {
+				role = "Admin";
+				c.statement.executeUpdate("INSERT INTO LoginInfo(login,password,role)"
+											+ "VALUES ('"+login+"','"+password+"','"+role+"')");
+				JOptionPane.showMessageDialog(frame, "Ajout du nouvel agent validé","Validé !",JOptionPane.PLAIN_MESSAGE);
+			}else {
+				role = "notAdmin";
+				c.statement.executeUpdate("INSERT INTO LoginInfo(login,password,role)"
+											+ "VALUES ('"+login+"','"+password+"','"+role+"')");
+				JOptionPane.showMessageDialog(frame, "Ajout du nouvel agent validé","Validé !",JOptionPane.PLAIN_MESSAGE);
+			}
+			c.deconnexion();
+		}catch (SQLException ex) {
+			JOptionPane.showMessageDialog(null, ex.getMessage(),"Erreur de connexion", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	
+	@SuppressWarnings("deprecation")
+	public void changerPassword(ActionEvent e) {
+		ConnectionSQL c = new ConnectionSQL();
+		try {
+			String login, password, newpassword;
+			login = loginConfirm.getText();
+			password = passwordactuel.getText();
+			newpassword = passwordField.getText();
+			c.connexion();
+			
+			String check = "SELECT * FROM LoginInfo "
+					+ "WHERE login='" +login+ "' AND password='"+password+"'";
+			c.result = c.statement.executeQuery(check);
+			
+			if(c.result.next()) {
+				c.statement.executeUpdate("UPDATE LoginInfo SET password = '"+newpassword+"'"
+											+ "WHERE login='"+login+"'");
+				JOptionPane.showMessageDialog(frame, "Changement du mot de passe effectué","Validé !",JOptionPane.PLAIN_MESSAGE);
+			}else {
+				JOptionPane.showMessageDialog(frame, "Login ou mot de passe actuel invalides","Erreur",JOptionPane.PLAIN_MESSAGE);
+			}
+			c.deconnexion();
+		}catch (SQLException ex) {
+			JOptionPane.showMessageDialog(null, ex.getMessage(),"Erreur de connexion", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	
+	
+	/**
+	 * Methodes de l'interface CalculEmprunt
+	 */
+	
+	
+	public void choixTypePret(ItemEvent e) {
+		if(e.getStateChange()==ItemEvent.SELECTED){
+			
+        	if (e.getItem().equals("pret immobilier")){
+            	tauxInteret = 1.2;
+            } else if (e.getItem().equals("credit consommation")){
+            	tauxInteret = 3.2;
+            } else if (e.getItem().equals("hypotheque")){
+            	tauxInteret = 0.8;
+            } else if (e.getItem().equals("pret etudiant")){
+            	tauxInteret = 0.5;
+            }
+        	
+        	lblTaux.setText(String.valueOf(tauxInteret));
+		}
+	}
+	
+	
+	public void calculEmprunt(MouseEvent e) {
+		String sc = textFieldDuree.getText();
+		String sd = textFieldCapEmprunte.getText();
+		
+		try {
+			double capitalEmprunte = Double.parseDouble(sd);
+			double dureeRembourse = Double.parseDouble(sc);
+			double total;
+			
+			tauxInteret = tauxInteret * 0.01;   //Mettre de taux d'interet en pourcentage 3,2 => 0.032 = 3,2%.
+        	total = ((capitalEmprunte * (tauxInteret/12) * Math.pow(1+(tauxInteret/12),dureeRembourse)) / (Math.pow(1+(tauxInteret/12),dureeRembourse)-1));
+        	
+        	JOptionPane.showMessageDialog(frame, "Resultat = "+total+" euros","Montant a payer par mois",JOptionPane.PLAIN_MESSAGE);
+        	
+		}catch (NumberFormatException e1) {
+			JOptionPane.showMessageDialog(null, e1.getMessage(),"Erreur de format", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	
 }

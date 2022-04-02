@@ -1,13 +1,12 @@
 package BankitPackage;
 
 import java.sql.*;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 public class FenetreLogin {
+
 
 	private JFrame frame;
 	private JPasswordField txtPassword;
@@ -82,7 +81,6 @@ public class FenetreLogin {
 		logo.setIcon(new ImageIcon("Img\\LogoWhite.png"));
 		panel.add(logo);
 		
-		
 		JPanel panel_1 = new JPanel();
 		panel_1.setForeground(new Color(102, 153, 255));
 		panel_1.setBackground(new Color(255, 255, 255));
@@ -145,34 +143,44 @@ public class FenetreLogin {
 		btnEntrer.setForeground(new Color(255, 255, 255));
 		btnEntrer.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 16)); 
 		btnEntrer.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ConnectionSQL c = new ConnectionSQL();
-				try {
-					String login, password;
-					login = txtLogin.getText();
-					password = txtPassword.getText();
-					c.connexion();
-					
-					String check = "SELECT * FROM LoginInfo "
-									+ "WHERE login='" +login+ "' AND password='"+password+"'";
-					c.result = c.statement.executeQuery(check);
-					
-					if(c.result.next()) {
-						frame.setVisible(false);
-						FenetreApplication tdb = new FenetreApplication();
-						tdb.getFrame().setVisible(true);
-					}else {
-						JOptionPane.showMessageDialog(null,"Login ou mot de passe invalides", "Oh oh !", JOptionPane.INFORMATION_MESSAGE);
-					}
-					
-					c.deconnexion();
-				}catch (SQLException ex) {
-					JOptionPane.showMessageDialog(null, ex.getMessage(),"Erreur de connexion", JOptionPane.ERROR_MESSAGE);
-				}
+				btnLogin(e);
 			}
 		});
 
 	}
+	
+
+	/**
+	 * Method
+	 */
+	
+	@SuppressWarnings("deprecation")
+	private void btnLogin(ActionEvent e) {
+		ConnectionSQL c = new ConnectionSQL();
+		try {
+			String login, password;
+			login = txtLogin.getText();
+			password = txtPassword.getText();
+			c.connexion();
+			
+			String check = "SELECT * FROM LoginInfo "
+							+ "WHERE login='" +login+ "' AND password='"+password+"'";
+			c.result = c.statement.executeQuery(check);
+			
+			if(c.result.next()) {
+				frame.setVisible(false);
+				FenetreApplication tdb = new FenetreApplication();
+				tdb.getFrame().setVisible(true);
+			}else {
+				JOptionPane.showMessageDialog(null,"Login ou mot de passe invalides", "Oh oh !", JOptionPane.INFORMATION_MESSAGE);
+			}
+			
+			c.deconnexion();
+		}catch (SQLException ex) {
+			JOptionPane.showMessageDialog(null, ex.getMessage(),"Erreur de connexion", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
 }
