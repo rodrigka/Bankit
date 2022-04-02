@@ -46,6 +46,9 @@ Des fenetres indiquant le problème apparettront pour vous aider lors d'un erreu
 ## Historique des versions
 
 * 8
+    * Ajout d'interfaces pour bien classer les méthodes + Mise des "ActionPerformed" en dehors de la méthode d'affichage de la fenêtre graphique "initialize".
+    * Voir [Changement](https://github.com/rodrigka/Bankit/commit/bb536da842de4826ec7336f6632038d1ec3e5a41)
+* 8
     * Finalisation de toutes les méthodes "EventListener" + Retrait de la partie accueil (finalement pas très esthétique) + retrait des classes en trop + Réalisation de la méthode Table(), qui récupère les valeurs de la table Transactions pour les afficher dans le panel "MesClients".Seul problème à résoudre : l'organisation MVC, qui s'avère plus compliquée que prévu.
     * Voir [Changement](https://github.com/rodrigka/Bankit/commit/a393dd73b22f1b0416d97f2474c69f4070937db1)
 * 7
