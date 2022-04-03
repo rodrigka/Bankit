@@ -37,7 +37,7 @@ Les classes codées en Java sont donc dédiées au déploiment des differentes f
 
 ## Aide
 
-Des fenetres indiquant le problème apparettront pour vous aider lors d'un erreur d'execution.
+En cas d'erreur : les fenetres indiquant le problème apparettront pour vous aider.
 
 ## Auteurs
 
