@@ -45,7 +45,7 @@ Des fenetres indiquant le problème apparettront pour vous aider lors d'un erreu
 
 ## Historique des versions
 
-* 8
+* 9
     * Ajout d'interfaces pour bien classer les méthodes + Mise des "ActionPerformed" en dehors de la méthode d'affichage de la fenêtre graphique "initialize".
     * Voir [Changement](https://github.com/rodrigka/Bankit/commit/bb536da842de4826ec7336f6632038d1ec3e5a41)
 * 8
