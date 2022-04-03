@@ -41,7 +41,7 @@ Des fenetres indiquant le problème apparettront pour vous aider lors d'un erreu
 
 ## Auteurs
 
-[Katerine Rodriguez](https://www.linkedin.com/in/katerine-rodriguez/)
+[Katerine Rodriguez](https://github.com/rodrigka)
 
 ## Historique des versions
 
