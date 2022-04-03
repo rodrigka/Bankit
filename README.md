@@ -83,5 +83,5 @@ Ce projet est sous la licence [Eclipse Public License 2.0] - voir le fichier LIC
 
 * Toute la communauté de  : https://stackoverflow.com/ 
 * Toute la communauté de  : https://www.developpez.net/forums/
-* M. Guillaume Tessier qui m'a beaucoup aidé à avancer lors dae la réalisation de certaines methodes
-* M. Arthur Moreau pour son aide avec les fenetres graphiques.
+* M. Arthur Moreau pour son aide avec les fenetres graphiques
+*  M. Guillaume Tessier qui m'a beaucoup aidé à avancer lors de la réalisation de certaines methodes.
