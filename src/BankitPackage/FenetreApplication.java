@@ -1,7 +1,8 @@
 package BankitPackage;
 
 
-import java.awt.event.*; 
+import java.awt.event.*;
+ 
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.border.LineBorder;
@@ -875,8 +876,9 @@ public class FenetreApplication implements Requete,CalculEmprunt {
 			
 			tauxInteret = tauxInteret * 0.01;   //Mettre de taux d'interet en pourcentage 3,2 => 0.032 = 3,2%.
         	total = ((capitalEmprunte * (tauxInteret/12) * Math.pow(1+(tauxInteret/12),dureeRembourse)) / (Math.pow(1+(tauxInteret/12),dureeRembourse)-1));
+        	double roundtotal = Math.round(total*100.0)/100.0;
         	
-        	JOptionPane.showMessageDialog(frame, "Resultat = "+total+" euros","Montant a payer par mois",JOptionPane.PLAIN_MESSAGE);
+        	JOptionPane.showMessageDialog(frame, "Resultat = "+roundtotal+" euros","Montant a payer par mois",JOptionPane.PLAIN_MESSAGE);
         	
 		}catch (NumberFormatException e1) {
 			JOptionPane.showMessageDialog(null, e1.getMessage(),"Erreur de format", JOptionPane.ERROR_MESSAGE);

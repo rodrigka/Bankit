@@ -8,10 +8,6 @@ public class ConnectionSQL {
 	Connection c;
 	Statement statement;
 	ResultSet result;
-	ResultSet rmontant;
-	ResultSet rdateconn;
-	ResultSet remprunt;
-	PreparedStatement ps;
 	
 	
 	public void connexion() {
